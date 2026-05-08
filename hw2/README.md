@@ -30,7 +30,9 @@
 
 **Task 4.** Implement `beam_search_with_lm` — shallow fusion of the provided **3-gram LM**.
 
+![Эксперимент с параметрами](task_4.png)
 
+Лучшие показатели при $\alpha$ = 0.01, $\beta$ = 0.0
 ---
 **Task 5.** Download the **4-gram LM** from [openslr.org/11](http://www.openslr.org/11/) and plug it into `beam_search_with_lm`.
 
@@ -39,6 +41,8 @@
 |3-gram| 23.15% | 8.03% | 
 |4-gram | 23.39% | 8.11% |
 
+Получены почти идентичные значения метрик (даже чуть худшие значения)
+
 ---
 
 **Task 6.** Implement `lm_rescore` [[line 95]](wav2vec2decoder.py#95) — second-pass LM rescoring of beam hypotheses.
@@ -46,11 +50,11 @@
 | type | params| WER| CER| 
 |---| ---| --- | ---|
 |Shallow Fusion| α=0.01, β=0.0 |23.15% | 8.03% | 
-|Rescoring |α=0.50, β=0.5 | 24.35% | 8.44% |
+|Rescoring |α=0.5, β=0.5 | 24.35% | 8.44% |
 
+![Эксперимент с параметрами](task_6.png)
 
-
-## Task 6 Qualitative Analysis – LM Rescoring vs Shallow Fusion
+Лучшие показатели при $\alpha$ = 0.5, $\beta$ = 0.5
 
 Ниже представлены 10 примеров из LibriSpeech test-other, где хотя бы один из LM-методов (shallow fusion или rescoring) изменил гипотезу по сравнению с чистым beam search.
 
@@ -69,8 +73,7 @@
 
 ### Выводы
 
-1. **Какие ошибки LM исправляет?**  
-   LM (особенно shallow fusion) чаще всего исправляет ошибки, связанные с:
+1. **Какие ошибки LM исправляет?**  - LM (особенно shallow fusion) чаще всего исправляет ошибки, связанные с:
    - Завершением слов: «rustling» вместо «rwustlling», «stone» вместо «stonme».
    - Удалением лишних артефактов в конце предложения (лишние буквы «s», «i»).
    - Восстановлением частых коротких слов, если акустическая модель их пропустила (например, «should have» → «shouldhave», хотя это может быть и ухудшением).  
@@ -84,3 +87,15 @@
 
 3. **В каких случаях shallow fusion и rescoring расходятся?**  
    Расхождения видны в примерах 1, 3, 4, 5, 6, 7, 8, 9, 10. Shallow fusion чаще вносит изменения (иногда положительные, иногда отрицательные), потому что LM влияет на каждом временном шаге и может рано зафиксировать неправильный путь. Rescoring работает с полными готовыми гипотезами и потому более консервативен – часто оставляет исходную beam-гипотезу без изменений. Это подтверждает тезис: **rescoring устойчивее к выбору α, но менее способно исправлять ошибки, если правильная гипотеза не попала в beam**. Shallow fusion может как исправить ошибку (пример 1, 7, 9), так и создать новую (пример 6, 8, 10). При больших α shallow fusion становится агрессивнее и может «выбрасывать» правильные, но редкие слова, поэтому для неё оптимальный α обычно меньше, чем для rescoring.
+
+---
+
+**Task 7.** Evaluate your best shallow-fusion and rescoring configurations (from Tasks 4–6) on `data/earnings22_test/`.
+
+
+| Method | LibriSpeech WER | LibriSpeech CER | Earnings22 WER | Earnings22 CER |
+|---|---|---|---|---|
+| Greedy | - | - | - | - |
+| Beam search | - | - | — | — |
+| Beam + 3-gram (shallow fusion) | - | - | — | — |
+| Beam + 3-gram (rescoring) | - | - | — | — |
