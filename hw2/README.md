@@ -90,12 +90,25 @@
 
 ---
 
-**Task 7.** Evaluate your best shallow-fusion and rescoring configurations (from Tasks 4–6) on `data/earnings22_test/`.
+**Task 7a.** Evaluate your best shallow-fusion and rescoring configurations (from Tasks 4–6) on `data/earnings22_test/`.
 
 
 | Method | LibriSpeech WER | LibriSpeech CER | Earnings22 WER | Earnings22 CER |
 |---|---|---|---|---|
-| Greedy | - | - | - | - |
-| Beam search | - | - | — | — |
-| Beam + 3-gram (shallow fusion) | - | - | — | — |
-| Beam + 3-gram (rescoring) | - | - | — | — |
+| Greedy | 11.22% | 3.81% | 54.97% | 25.58% |
+| Beam search | 22.02% | 7.64% | 59.64% | 27.32% |
+| Beam + 3-gram (shallow fusion) | 23.15% | 8.03% | 116.30% | 39.13% |
+| Beam + 3-gram (rescoring) | 24.35% | 8.44% | 59.01% | 27.23% |
+
+---
+
+**Task 7b.** Run a temperature sweep on `data/earnings22_test/` using your best shallow-fusion configuration from Task 4.
+
+![Эксперимент с параметрами](task7b_temperature_earnings22.png)
+
+Аналогично Заданию 3 температура не влияет на жадное декодирование при всех значениях температуры, алгоритм всегда выбирает одини тот же токен независимо от параметра. При beam search более высокая температура только вредит, что указывает на то, что на out-of-domain данных модель недостаточна уверена в правильных ответах. Уменьшение температуры повышает вероятность правильных токенов, позволяя модели лучше распознавать финансовую речь.
+
+---
+
+**Task 9.** Apply your two best decoding methods using **both available LMs** (LibriSpeech 3-gram and your financial-domain LM) on both test sets.
+
