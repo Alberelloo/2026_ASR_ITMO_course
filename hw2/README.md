@@ -11,15 +11,15 @@
 
 **Task 2.** Implement `beam_search_decode`.
 
-Evaluate on `data/librispeech_test_other/` and report CER & WER. Reference values: **WER ≈ 9.9%, CER ≈ 3.4%**
-
-Vary `beam_width` (e.g. 1, 3, 10, 50) and observe quality vs. compute trade-off, add corresponding graph/table to report.
+![Эксперимент с beam_width](task_2.png)
 
 ---
 
 **Task 3.** Implement **temperature scaling** for acoustic model outputs.
 
+![Эксперимент с temperature scaling](task_3.png)
 
+---
 ### Part 2 — Language Model Integration
 
 **Task 4.** Implement `beam_search_with_lm` — shallow fusion of the provided **3-gram LM**.
