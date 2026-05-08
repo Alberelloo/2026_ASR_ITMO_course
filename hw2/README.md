@@ -1,14 +1,41 @@
+### Part 1 — CTC Decoding
+
+**Task 1.** Implement `greedy_decode`.
+
+| - | WER| CER| 
+|---| --- | ---|
+|greedy_decode| 11.22% | 3.81% | 
+|reference | 10.4% | 3.5% |
+
+---
+
+**Task 2.** Implement `beam_search_decode`.
+
+Evaluate on `data/librispeech_test_other/` and report CER & WER. Reference values: **WER ≈ 9.9%, CER ≈ 3.4%**
+
+Vary `beam_width` (e.g. 1, 3, 10, 50) and observe quality vs. compute trade-off, add corresponding graph/table to report.
+
+---
+
+**Task 3.** Implement **temperature scaling** for acoustic model outputs.
 
 
+### Part 2 — Language Model Integration
 
-task 5 
+**Task 4.** Implement `beam_search_with_lm` — shallow fusion of the provided **3-gram LM**.
+
+
+---
+**Task 5.** Download the **4-gram LM** from [openslr.org/11](http://www.openslr.org/11/) and plug it into `beam_search_with_lm`.
 
 |n-gram | WER| CER| 
 |---| --- | ---|
 |3-gram| 23.15% | 8.03% | 
 |4-gram | 23.39% | 8.11% |
 
-task 6
+---
+
+**Task 6.** Implement `lm_rescore` [[line 95]](wav2vec2decoder.py#95) — second-pass LM rescoring of beam hypotheses.
 
 | type | params| WER| CER| 
 |---| ---| --- | ---|
